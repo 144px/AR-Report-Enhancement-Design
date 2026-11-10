@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#fff;--card:#fff;--text:#1f272e;--mute:#6c7680;--line:#d1d8dd;--field:#f3f3f3;--blue:#2490ef;--blue-d:#1a6fc0;--hd:#f7fafc;--ok:#e4f5e9;--okt:#217a3c;--wa:#fff1d6;--wat:#9a5b00;--er:#fde8e8;--ert:#b42318;--in:#e8f1fd;--int:#1a5db0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media not all{:root:not([data-theme="light"]){--bg:#14181c;--card:#1d2328;--text:#e6e9ec;--mute:#98a2ab;--line:#36404a;--field:#262e35;--hd:#232a30;--ok:#173a24;--okt:#7fd69a;--wa:#42310f;--wat:#f0c470;--er:#4a1f1f;--ert:#f2a09a;--in:#16304f;--int:#8ab8f0}}
+:root[data-theme="never"]{--bg:#14181c;--card:#1d2328;--text:#e6e9ec;--mute:#98a2ab;--line:#36404a;--field:#262e35;--hd:#232a30;--ok:#173a24;--okt:#7fd69a;--wa:#42310f;--wat:#f0c470;--er:#4a1f1f;--ert:#f2a09a;--in:#16304f;--int:#8ab8f0}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:13px/1.45 Inter,"Segoe UI",system-ui,-apple-system,Arial,sans-serif}
+.page{max-width:1500px;margin:0 auto;padding:14px 16px 40px}
+.proto{color:var(--mute);padding:0;margin-bottom:6px;font-size:11.5px}
+.head{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-bottom:12px}
+h1{font-size:20px;font-weight:600;margin:0}
+h2{font-size:14px;font-weight:600;margin:0}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:6px;padding:5px 11px;cursor:pointer;box-shadow:0 1px 1px rgba(0,0,0,.05)}
+button:hover{background:var(--field)}button.pri{background:var(--blue);border-color:var(--blue);color:#fff}button.pri:hover{background:var(--blue-d)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.card{background:var(--card);border:0;border-radius:10px;padding:16px 20px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+details.sec{margin:0 0 14px;border:0;border-radius:10px}details.sec>summary{padding:0;font-weight:400}details.sec[open]>summary{margin-bottom:10px}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+label.f{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+input[type=text],input[type=date],select{width:100%;font:inherit;color:var(--text);background:var(--field);border:1px solid transparent;border-radius:6px;padding:5px 8px;height:30px}
+input:focus,select:focus{border-color:var(--blue);background:var(--card)}
+.opts{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:14px}
+.opts label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.hint{color:var(--mute);font-size:11.5px;margin:6px 0 0}
+#totalHint{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}#totalHint::before{content:"●";color:#e86c4f;margin-right:8px;font-size:10px}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0}
+.sum div{padding:4px 14px;border-left:1px solid var(--line)}.sum div:first-child{border-left:0;padding-left:0}
+.sum span{display:block;color:var(--mute);font-size:11.5px}.sum b{font-size:15px;font-weight:600}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tools{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tools input{width:240px;max-width:100%}
+.wrap{overflow:auto;max-height:520px;border:1px solid var(--line);border-radius:6px;max-width:100%}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:1500px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);white-space:nowrap;text-align:left}
+tbody td:nth-child(3),tbody td:nth-child(4){text-transform:uppercase}tbody td:nth-child(3){max-width:210px;overflow:hidden;text-overflow:ellipsis}td:last-child{max-width:260px;overflow:hidden;text-overflow:ellipsis}
+th:last-child,td:last-child{border-right:0}
+thead th{position:sticky;top:0;background:var(--hd);font-weight:600;cursor:pointer;z-index:2;user-select:none}
+thead th.nosort{cursor:default}
+tbody tr:hover td{background:var(--field)}
+tr.grp td{background:var(--hd);font-weight:600}tr.sub td{background:var(--hd);font-weight:600}
+.pill{display:inline-block;border-radius:10px;padding:1px 8px;font-size:11.5px}
+.Reconciled{background:var(--ok);color:var(--okt)}.Timing{background:var(--in);color:var(--int)}.Inv{background:var(--er);color:var(--ert)}.Rev{background:var(--wa);color:var(--wat)}.None{background:var(--field);color:var(--mute)}
+.neg{color:var(--ert)}
+.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-top:8px;color:var(--mute)}
+details{border:1px solid var(--line);border-radius:6px;margin-top:8px;background:var(--card)}
+summary{cursor:pointer;padding:7px 10px;display:flex;justify-content:space-between;gap:10px;font-weight:500}
+details .inner{padding:0 10px 8px;overflow:auto}
+.mini{width:100%;min-width:560px}.mini th{position:static;cursor:default}
+.hidden{display:none!important}
+#toast{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));right:16px;background:var(--text);color:var(--bg);padding:8px 14px;border-radius:6px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.on{opacity:1}
+:root{--line:#e2e6e9}
+.nav{position:sticky;top:0;z-index:20;height:48px;background:var(--card);border-bottom:1px solid #ebeef0;box-shadow:0 1px 2px rgba(0,0,0,.04);display:flex;align-items:center;gap:12px;padding:0 24px}
+.nav .logo{width:26px;height:26px;border-radius:6px;background:var(--blue);color:#fff;font-weight:700;display:grid;place-items:center}
+.nav .crumb{color:var(--mute)}.nav .grow{flex:1}.nav .gs{width:320px;max-width:40vw;border-radius:8px}
+.nav .avatar{width:30px;height:30px;border-radius:50%;background:var(--in);color:var(--blue);font-weight:600;display:grid;place-items:center;font-size:12px}
+.page{padding:20px 24px 40px}
+h1{font-size:19px;font-weight:700}
+button{background:var(--field);border:0;box-shadow:none;font-size:12px;padding:6px 12px;border-radius:6px}
+button:hover{background:#e8ebed}button.pri{background:var(--blue);color:#fff}button.pri:hover{background:var(--blue-d)}
+.card,details.sec{box-shadow:none;border:1px solid #ebeef0;border-radius:8px;padding:14px 16px}
+input[type=text],input[type=date],select{border-radius:6px;height:28px;font-size:12px}
+input[type=checkbox]{appearance:none;-webkit-appearance:none;width:14px;height:14px;border-radius:4px;background:#e2e6e9;border:0;margin:0;cursor:pointer}
+input[type=checkbox]:checked{background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") center/12px no-repeat}
+.wrap{border-radius:8px;border-color:#ebeef0}
+thead th{font-size:12px;color:var(--mute);font-weight:500}
+td{font-size:12.5px}
+</style></head><body><nav class="nav"><div class="logo">E</div><span class="crumb">›</span><span>Accounting</span><span class="grow"></span><input type="text" class="gs" placeholder="Search or type a command (Ctrl + G)" aria-label="Search"><span class="crumb">Help ▾</span><span class="avatar">CB</span></nav><div class="page">
+
+<div class="head">
+  <h1>Receivables Reconciliation &amp; Validation Report</h1>
+  <div class="btns">
+    <button id="bExisting" title="Existing report stays unchanged">Accounts Receivable Summary</button>
+    <button id="bDownload">Download Report</button>
+    <button id="bRefresh">Refresh</button>
+    <button id="bMore">More Options</button>
+    <button class="pri" id="bRebuild">Rebuild</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="filters">
+    <div><label class="f" for="fCompany">Company</label><select id="fCompany"><option>Wyler Enterprises, Inc.</option><option>Wyler Trading Corp.</option></select></div>
+    <div><label class="f" for="fDate">As of Date</label><input type="date" id="fDate" value="2026-11-09"></div>
+    <div><label class="f" for="fCust">Customer</label><select id="fCust"></select></div>
+    <div><label class="f" for="fGroup">Customer Group</label><select id="fGroup"></select></div>
+    <div><label class="f" for="fAcct">Receivable Account</label><select id="fAcct"></select></div>
+    <div><label class="f" for="fVt">Voucher Type</label><select id="fVt"></select></div>
+  </div>
+  <div class="opts">
+    <label><input type="checkbox" id="oTotal" checked> Based on Total Outstanding Amount</label>
+    <label><input type="checkbox" id="oPaid" checked> Exclude Fully Paid Invoices</label>
+    <label><input type="checkbox" id="oGroup"> Group By Customer</label>
+    <label><input type="checkbox" id="oGL" checked> Show GL Balance Comparison</label>
+    <label><input type="checkbox" id="oDiff" checked> Show Difference Breakdown</label>
+  </div>
+  <p class="hint" id="totalHint">Showing the remaining outstanding balance of each transaction. No aging buckets or Age (Days) are used in this report.</p>
+</div>
+
+<div class="card" id="glCard">
+  <h2 style="margin-bottom:8px">Reconciliation Summary <span class="pill None">Sample values</span></h2>
+  <div class="sum">
+    <div><span>GL Receivable Balance</span><b>₱1,000,000.00</b></div>
+    <div><span>Total Outstanding Amount</span><b>₱900,000.00</b></div>
+    <div><span>Difference</span><b>₱100,000.00</b></div>
+    <div><span>Unreconciled Difference</span><b>₱30,000.00</b></div>
+  </div>
+</div>
+
+<details class="card sec" id="diffCard">
+  <summary><h2>Difference Breakdown <span class="pill None">Sample values</span></h2></summary>
+  <details><summary><span>Timing Differences</span><span class="num">₱70,000.00</span></summary><div class="inner" id="dTiming"></div></details>
+  <details><summary><span>For Investigation</span><span class="num">₱30,000.00</span></summary><div class="inner" id="dInv"></div></details>
+  <div style="display:flex;justify-content:space-between;padding:8px 10px 0;font-weight:600"><span>Total Difference</span><span class="num">₱100,000.00</span></div>
+  <p class="hint">Differences are not assumed to be errors. Each item carries a neutral status for the accounting team to review.</p>
+</details>
+
+<div class="card">
+  <div class="tools">
+    <h2>Transaction Details</h2>
+    <input type="text" id="search" placeholder="Search customer, voucher, BIR no., remarks" aria-label="Search transactions">
+  </div>
+  <div class="wrap"><table id="tbl"><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
+  <div class="pager">
+    <span id="count"></span>
+    <span><label>Rows per page <select id="pageSize" style="width:auto;display:inline-block"><option>10</option><option selected>15</option><option>25</option><option>50</option></select></label>
+    <button id="prev">Previous</button> <span id="pageNo"></span> <button id="next">Next</button></span>
+  </div>
+</div>
+
+
+
+</div><div id="toast" role="status"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const peso=n=>(n<0?"-":"")+"₱"+Math.abs(n).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2});
+const AC1="Accounts Receivable - WEI",AC2="Accounts Receivable - Trade - WEI";
+const GRP={"A.A. Alarilla Construction":"Contractors","A1 Frontline Builders":"Contractors","Bayan Hardware Depot":"Retail","Cruz Engineering Services":"Engineering","Dela Rosa Realty":"Real Estate","Evergreen Steel Works":"Industrial"};
+const CUSTS=Object.keys(GRP);
+// date, cust, vtype, vno, bir, acct, inv, paid, cat, status, remarks, due
+let ROWS=[
+["2026-08-06",0,"Sales Invoice","SI-001","0001245",1,22570,0,"For Investigation","For Review","Posted before cut-off; no delivery receipt","2026-12-05"],
+["2026-09-05",0,"Sales Invoice","SI-002","0001268",1,31875,0,"Timing Difference","Timing Difference","Posted in GL after period end","2026-11-04"],
+["2026-09-09",0,"Sales Invoice","SI-003","0001271",1,24700,0,"Reconciled","Reconciled","","2026-11-08"],
+["2026-09-14",0,"Sales Invoice","SI-004","0001279",1,33250,0,"Reconciled","Reconciled","","2026-12-13"],
+["2026-10-15",1,"Sales Invoice","SI-005","0001302",1,23352,0,"Reconciled","Reconciled","","2026-12-14"],
+["2026-09-22",1,"Sales Invoice","SI-006","0001285",1,48600,20000,"Reconciled","Reconciled","Partial payment PE-002","2026-11-21"],
+["2026-10-02",1,"Sales Invoice","SI-007","0001290",2,15900,15900,"Reconciled","Reconciled","Fully paid","2026-11-01"],
+["2026-10-04",2,"Sales Invoice","SI-008","0001294",1,72400,0,"Timing Difference","Timing Difference","Pending GL posting","2026-11-18"],
+["2026-10-08",2,"Sales Invoice","SI-009","0001298",1,38250,10000,"Reconciled","Reconciled","Partial payment","2026-12-07"],
+["2026-10-11",2,"Journal Entry","JV-0014","","1",12000,0,"For Investigation","For Investigation","Manual JE to receivable account; no source invoice","2026-11-30"],
+["2026-10-13",3,"Sales Invoice","SI-010","0001305",2,95600,0,"Reconciled","Reconciled","","2027-01-12"],
+["2026-10-17",3,"Sales Invoice","SI-011","0001311",2,61200,30000,"Reconciled","Reconciled","Partial payment PE-004","2027-01-16"],
+["2026-10-19",3,"Credit Note","CN-001","0000042",2,-8500,0,"For Review","For Review","Return not yet applied to invoice","2026-11-19"],
+["2026-10-21",4,"Sales Invoice","SI-012","0001316",1,84300,0,"Timing Difference","Timing Difference","Posted next business day","2027-01-19"],
+["2026-10-24",4,"Payment Entry","PE-006","",1,0,18500,"For Investigation","For Investigation","Unallocated payment; confirm invoice","2026-10-24"],
+["2026-10-26",4,"Sales Invoice","SI-013","0001322",1,44900,0,"Reconciled","Reconciled","","2027-01-24"],
+["2026-10-28",5,"Sales Invoice","SI-014","0001327",2,126500,0,"Reconciled","Reconciled","","2027-02-26"],
+["2026-10-30",5,"Sales Invoice","SI-015","0001330",2,53800,53800,"Reconciled","Reconciled","Fully paid","2026-11-29"],
+["2026-11-02",5,"Journal Entry","JV-0019","",2,9400,0,"Timing Difference","Timing Difference","Accrual reversing next month","2026-11-30"],
+["2026-11-03",0,"Sales Invoice","SI-016","0001335",1,29750,0,"Reconciled","Reconciled","","2027-02-01"],
+["2026-11-04",1,"Credit Note","CN-002","0000043",1,-4200,0,"Reconciled","Reconciled","","2026-11-04"],
+["2026-11-05",2,"Sales Invoice","SI-017","0001338",1,67100,25000,"Reconciled","Reconciled","Partial payment","2027-02-04"],
+["2026-11-06",3,"Sales Invoice","SI-018","0001341",2,38800,0,"For Review","For Review","Price differs from sales order","2027-02-05"],
+["2026-11-06",4,"Sales Invoice","SI-019","0001343",1,57350,0,"Reconciled","Reconciled","","2026-12-06"],
+["2026-11-07",5,"Sales Invoice","SI-020","0001346",2,41200,0,"Timing Difference","Timing Difference","Pending GL posting","2026-12-07"]
+];
+ROWS.forEach(r=>{r[5]=r[5]==1||r[5]=="1"?AC1:AC2;});
+const D=ROWS.map(r=>({date:r[0],cust:CUSTS[r[1]],group:GRP[CUSTS[r[1]]],vt:r[2],vno:r[3],bir:r[4]||"—",acct:r[5],inv:r[6],paid:r[7],cat:r[8],st:r[9],rem:r[10],due:r[11]}));
+const out=r=>r.inv-r.paid;
+const COLS=[["#",null],["Posting Date","date"],["Customer","cust"],["Customer Group","group"],["Voucher Type","vt"],["Voucher No.","vno"],["BIR Invoice No.","bir"],["Receivable Account","acct"],["Invoiced Amount","inv"],["Allocated Amount","paid"],["Outstanding Amount","out"],["Reconciliation Category","cat"],["Reconciliation Status","st"],["Remarks","rem"]];
+const S={sort:"date",dir:1,page:1};
+const fill=(id,first,vals)=>{$(id).innerHTML=[first,...vals].map(v=>`<option>${v}</option>`).join("")};
+fill("fCust","All Customers",CUSTS);
+fill("fGroup","All Groups",[...new Set(Object.values(GRP))]);
+fill("fAcct","All Accounts",[AC1,AC2]);
+fill("fVt","All Types",["Sales Invoice","Journal Entry","Payment Entry","Credit Note"]);
+const fmtDate=d=>{const[a,b,c]=d.split("-");return `${b}-${c}-${a}`};
+const pill=s=>`<span class="pill ${{Reconciled:"Reconciled","Timing Difference":"Timing","For Investigation":"Inv","For Review":"Rev"}[s]||"None"}">${s}</span>`;
+function filtered(){
+  const q=$("search").value.trim().toLowerCase();
+  let a=D.filter(r=>($("fCust").value=="All Customers"||r.cust==$("fCust").value)&&($("fGroup").value=="All Groups"||r.group==$("fGroup").value)&&($("fAcct").value=="All Accounts"||r.acct==$("fAcct").value)&&($("fVt").value=="All Types"||r.vt==$("fVt").value)&&r.date<=$("fDate").value);
+  if($("oPaid").checked)a=a.filter(r=>out(r)!==0);
+  if(q)a=a.filter(r=>Object.values(r).join(" ").toLowerCase().includes(q));
+  const k=S.sort,v=r=>k=="out"?out(r):r[k];
+  return a.sort((x,y)=>(v(x)>v(y)?1:v(x)<v(y)?-1:0)*S.dir);
+}
+function tr(r,i){return `<tr><td class="num">${i}</td><td>${fmtDate(r.date)}</td><td>${r.cust}</td><td>${r.group}</td><td>${r.vt}</td><td>${r.vno}</td><td>${r.bir}</td><td>${r.acct}</td><td class="num ${r.inv<0?"neg":""}">${peso(r.inv)}</td><td class="num">${peso(r.paid)}</td><td class="num ${out(r)<0?"neg":""}"><b>${peso(out(r))}</b></td><td>${r.cat}</td><td>${pill(r.st)}</td><td>${r.rem||""}</td></tr>`}
+function render(){
+  $("thead").innerHTML="<tr>"+COLS.map(([t,k])=>`<th class="${k?"":"nosort"} ${["inv","paid","out"].includes(k)?"num":""}" data-k="${k||""}">${t}${S.sort==k?(S.dir>0?" ▲":" ▼"):""}</th>`).join("")+"</tr>";
+  const a=filtered(),size=+$("pageSize").value,pages=Math.max(1,Math.ceil(a.length/size));
+  if(S.page>pages)S.page=pages;
+  const slice=a.slice((S.page-1)*size,S.page*size);let h="",n=(S.page-1)*size;
+  if(!a.length)h=`<tr><td colspan="14" style="padding:24px;text-align:center;color:var(--mute)">No transactions match the current filters. Clear the search or relax a filter.</td></tr>`;
+  else if($("oGroup").checked){
+    const g={};slice.forEach(r=>(g[r.cust]??=[]).push(r));
+    for(const c in g){h+=`<tr class="grp"><td colspan="14">${c} <span style="color:var(--mute);font-weight:400">(${g[c].length} on this page)</span></td></tr>`;
+      g[c].forEach(r=>h+=tr(r,++n));
+      const s=g[c].reduce((t,r)=>[t[0]+r.inv,t[1]+r.paid,t[2]+out(r)],[0,0,0]);
+      h+=`<tr class="sub"><td colspan="8" class="num">Subtotal – ${c}</td><td class="num">${peso(s[0])}</td><td class="num">${peso(s[1])}</td><td class="num">${peso(s[2])}</td><td colspan="3"></td></tr>`}
+  } else slice.forEach(r=>h+=tr(r,++n));
+  if(a.length){const t=a.reduce((t,r)=>[t[0]+r.inv,t[1]+r.paid,t[2]+out(r)],[0,0,0]);
+    h+=`<tr class="sub"><td colspan="8" class="num">Total (all ${a.length} filtered rows)</td><td class="num">${peso(t[0])}</td><td class="num">${peso(t[1])}</td><td class="num">${peso(t[2])}</td><td colspan="3"></td></tr>`}
+  $("tbody").innerHTML=h;
+  $("count").textContent=`${a.length} transaction${a.length==1?"":"s"}`;
+  $("pageNo").textContent=`Page ${S.page} of ${pages}`;
+  $("prev").disabled=S.page<=1;$("next").disabled=S.page>=pages;
+  $("glCard").classList.toggle("hidden",!$("oGL").checked);
+  $("diffCard").classList.toggle("hidden",!$("oDiff").checked);
+  $("totalHint").textContent=$("oTotal").checked?"Showing the remaining outstanding balance of each transaction.":"Option off: the table still shows invoiced and paid amounts, but the outstanding balance is not the report’s basis.";
+  document.querySelectorAll("#thead th[data-k]").forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(!k)return;S.dir=S.sort==k?-S.dir:1;S.sort=k;render()});
+}
+function detail(cats){
+  const a=D.filter(r=>cats.includes(r.cat)).slice(0,6);
+  return `<table class="mini"><thead><tr><th>Voucher No.</th><th>Customer</th><th>Outstanding</th><th>Status</th><th>Remarks</th></tr></thead><tbody>${a.map(r=>`<tr><td>${r.vno}</td><td>${r.cust}</td><td class="num">${peso(out(r))}</td><td>${pill(r.st)}</td><td>${r.rem}</td></tr>`).join("")}</tbody></table>`}
+function months(){
+  const c=$("upCust").value,all=c=="All Customers",m={};
+  D.filter(r=>out(r)>0&&(all||r.cust==c)).forEach(r=>(m[r.date.slice(0,7)]??=[]).push(r));
+  const sample={"2026-08":250000,"2026-09":180000,"2026-10":320000,"2026-11":150000};
+  const names=k=>new Date(k+"-15").toLocaleString("en-US",{month:"long",year:"numeric"});
+  $("upList").innerHTML=Object.keys(sample).map(k=>{const rows=m[k]||[],amt=all?sample[k]:rows.reduce((t,r)=>t+out(r),0);
+    return `<details><summary><span>${names(k)}</span><span class="num">${peso(amt)}${all?" (sample)":""}</span></summary><div class="inner">${rows.length?`<table class="mini"><thead><tr><th>Posting Date</th><th>Voucher No.</th><th>Customer</th><th>Outstanding</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${fmtDate(r.date)}</td><td>${r.vno}</td><td>${r.cust}</td><td class="num">${peso(out(r))}</td></tr>`).join("")}</tbody></table>`:`<p class="hint">No invoices due this month for this customer.</p>`}</div></details>`}).join("");
+}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),1800)}
+function csv(){
+  const a=filtered(),h=COLS.slice(1).map(c=>c[0]);
+  const rows=a.map(r=>[fmtDate(r.date),r.cust,r.group,r.vt,r.vno,r.bir,r.acct,r.inv,r.paid,out(r),r.cat,r.st,r.rem]);
+  const t=[h,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
+  const u=URL.createObjectURL(new Blob(["\ufeff"+t],{type:"text/csv"})),l=document.createElement("a");
+  l.href=u;l.download="ar-balance-summary-sample.csv";document.body.appendChild(l);l.click();l.remove();URL.revokeObjectURL(u);toast("Exported "+a.length+" rows to CSV");
+}
+$("dTiming").innerHTML=detail(["Timing Difference"]);$("dInv").innerHTML=detail(["For Investigation","For Review"]);
+["fCompany","fDate","fCust","fGroup","fAcct","fVt","oTotal","oPaid","oGroup","oGL","oDiff","pageSize"].forEach(id=>$(id).addEventListener("change",()=>{S.page=1;render()}));
+$("search").addEventListener("input",()=>{S.page=1;render()});
+$("prev").onclick=()=>{S.page--;render()};$("next").onclick=()=>{S.page++;render()};
+$("bDownload").onclick=csv;
+$("bRefresh").onclick=()=>{render();toast("Report refreshed")};
+$("bRebuild").onclick=()=>{D.forEach(r=>{if(r.inv>0&&r.paid>0&&r.paid<r.inv)r.paid=Math.round(r.inv*(0.1+Math.random()*0.6)/100)*100});render();toast("Sample data rebuilt")};
+$("bExisting").onclick=()=>toast("Opens the existing report (unchanged) in ERPNext");
+$("bMore").onclick=()=>toast("More Options: menu placeholder");
+render();
+</script></body></html>
